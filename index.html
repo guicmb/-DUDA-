@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pergunta Importante</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ffe3e3 0%, #ffd1d1 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            max-width: 90%;
+            width: 380px;
+            z-index: 10;
+        }
+        
+        h1 {
+            color: #ff4a5a;
+            font-size: 24px;
+            margin-bottom: 25px;
+            min-height: 60px;
+        }
+        
+        .botoes {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            align-items: center;
+            height: 60px;
+        }
+        
+        button {
+            padding: 12px 35px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+        }
+        
+        #btn-sim {
+            background-color: #ff4a5a;
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 74, 90, 0.4);
+            transition: transform 0.1s;
+        }
+        
+        #btn-sim:active {
+            transform: scale(0.95);
+        }
+        
+        #btn-nao {
+            background-color: #e0e0e0;
+            color: #666;
+            position: relative;
+            animation: voarBotao 4s infinite alternate ease-in-out;
+        }
+        
+        @keyframes voarBotao {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(60px, -40px); }
+            50% { transform: translate(-50px, 30px); }
+            75% { transform: translate(40px, 50px); }
+            100% { transform: translate(-60px, -30px); }
+        }
+        
+        .foto-container {
+            display: none;
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+        
+        .foto-container img {
+            width: 100%;
+            border-radius: 15px;
+            margin-top: 15px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+        }
+
+        /* Corações translúcidos ao fundo */
+        .coracao {
+            position: absolute;
+            color: rgba(255, 74, 90, 0.15);
+            font-size: 24px;
+            bottom: -50px;
+            animation: flutuar 6s linear infinite;
+            z-index: 1;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        @keyframes flutuar {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-105vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="conteudo">
+        <!-- TELA 1: AS PERGUNTAS -->
+        <div id="tela-pergunta">
+            <h1 id="texto-pergunta">Você confirma que ama ele?</h1>
+            <div class="botoes">
+                <button id="btn-sim" onclick="cliqueNoSim()">SIM!</button>
+                <button id="btn-nao">NÃO</button>
+            </div>
+        </div>
+
+        <!-- TELA 2: AS FOTOS -->
+        <div id="tela-foto" class="foto-container">
+            <h1>Eu também te amo demais! ❤️</h1>
+            <!-- Suas fotos já adicionadas abaixo -->
+            <img src="https://i.ibb.co/8LXqnr7C/4-ED33-F5-D-CA98-4-D08-BB32-E6-F72-AF65090.jpg" alt="Nossa Foto 1">
+            <img src="https://i.ibb.co/Zz7Dn0qc/IMG-5650.png" alt="Nossa Foto 2">
+        </div>
+    </div>
+
+    <script>
+        let contadorCliques = 0;
+
+        // Perguntas sem emojis
+        const perguntas = [
+            "Você confirma que ama ele?",
+            "Mas tem certeza que ama ele mesmo?",
+            "Certeza mesmo? Ama ele pra sempre?"
+        ];
+
+        function cliqueNoSim() {
+            contadorCliques++;
+
+            if (contadorCliques < perguntas.length) {
+                document.getElementById('texto-pergunta').innerText = perguntas[contadorCliques];
+            } else {
+                document.getElementById('tela-pergunta').style.display = 'none';
+                document.getElementById('tela-foto').style.display = 'block';
+            }
+        }
+
+        // Gerador de corações flutuantes no fundo
+        function criarCoracao() {
+            const coracao = document.createElement('div');
+            coracao.classList.add('coracao');
+            coracao.innerHTML = '❤️';
+            
+            coracao.style.left = Math.random() * 100 + 'vw';
+            
+            const tamanho = Math.random() * 20 + 15;
+            coracao.style.fontSize = tamanho + 'px';
+            
+            const duracao = Math.random() * 3 + 4;
+            coracao.style.animationDuration = duracao + 's';
+            
+            document.body.appendChild(coracao);
+            
+            setTimeout(() => {
+                coracao.remove();
+            }, duracao * 1000);
+        }
+
+        setInterval(criarCoracao, 400);
+    </script>
+</body>
+</html>
