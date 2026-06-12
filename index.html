@@ -82,7 +82,6 @@
             100% { transform: translate(-60px, -30px); }
         }
         
-        /* Container do Carrossel de Fotos */
         .foto-container {
             display: none;
             position: relative;
@@ -110,7 +109,6 @@
             border-radius: 15px;
         }
 
-        /* Estilo da Seta Romântica e Suave */
         .seta-proximo {
             position: absolute;
             right: -10px;
@@ -135,5 +133,261 @@
 
         @keyframes balancoSeta {
             0%, 100% { transform: translateY(-50%) translateX(0); opacity: 0.8; }
-            50% { transform: translateY(-5
+            50% { transform: translateY(-50%) translateX(6px); opacity: 1; }
+        }
 
+        .coracao {
+            position: absolute;
+            color: rgba(255, 74, 90, 0.15);
+            font-size: 24px;
+            bottom: -50px;
+            animation: flutuar 6s linear infinite;
+            z-index: 1;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        @keyframes flutuar {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-105vh) rotate(360deg); opacity: 0; }
+        }
+
+        .coracao-recado {
+            display: none;
+            position: absolute;
+            width: 190px;
+            height: 190px;
+            background-color: #ff4a5a;
+            transform: rotate(-45deg);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            cursor: grab;
+            z-index: 100;
+            touch-action: none;
+            animation: cairDoTopo 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .coracao-recado:active {
+            cursor: grabbing;
+        }
+
+        .coracao-recado::before,
+        .coracao-recado::after {
+            content: "";
+            position: absolute;
+            width: 190px;
+            height: 190px;
+            background-color: #ff4a5a;
+            border-radius: 50%;
+        }
+
+        .coracao-recado::before {
+            top: -95px;
+            left: 0;
+        }
+
+        .coracao-recado::after {
+            top: 0;
+            left: 95px;
+        }
+
+        .texto-recado {
+            position: absolute;
+            transform: rotate(45deg);
+            width: 180px;
+            text-align: center;
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+            line-height: 1.4;
+            z-index: 101;
+            top: 20px;
+            left: 20px;
+            pointer-events: none;
+        }
+
+        @keyframes cairDoTopo {
+            0% { top: -300px; left: calc(50% - 95px); }
+            100% { top: 35%; left: calc(50% - 95px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="recado-amor" class="coracao-recado">
+        <div class="texto-recado">
+            Duda, você é o meu amor e vai ser o meu amor pra sempre! Eu te amo demais! Obrigado tudo ❤️
+        </div>
+    </div>
+
+    <div class="card" id="conteudo">
+        <div id="tela-pergunta">
+            <h1 id="texto-pergunta">Você confirma que ama ele?</h1>
+            <div class="botoes" id="container-botoes">
+                <button id="btn-sim" class="btn-sim-estilo" onclick="cliqueNoSim()">SIM!</button>
+                <button id="btn-nao">NÃO</button>
+            </div>
+        </div>
+
+        <div id="tela-foto" class="foto-container">
+            <h1 id="titulo-final">Eu também te amo demais! ❤️</h1>
+            
+            <div class="carrossel">
+                <div class="slide" id="slide-1">
+                    <img src="https://i.postimg.cc/MptzN8xv/4ED33F5D-CA98-4D08-BB32-E6F72AF65090.jpg" alt="Nossa Foto 1">
+                </div>
+                <div class="slide" id="slide-2">
+                    <img src="https://i.postimg.cc/fbrDWjJ7/IMG-5652.jpg" alt="Nossa Foto 2">
+                </div>
+            </div>
+
+            <button class="seta-proximo" id="btn-seta" onclick="mudarFoto()">➔</button>
+        </div>
+    </div>
+
+    <script>
+        let contadorCliques = 0;
+        let fotoAtual = 1;
+
+        const perguntas = [
+            "Você confirma que ama ele?",
+            "Mas tem certeza que ama ele mesmo?",
+            "Certeza mesmo? Ama ele pra sempre?",
+            "Você vai desblindar um pouquinho só pra me deixar um pouco feliz? ❤️"
+        ];
+
+        function cliqueNoSim() {
+            contadorCliques++;
+
+            if (contadorCliques < perguntas.length) {
+                document.getElementById('texto-pergunta').innerText = perguntas[contadorCliques];
+                
+                if (contadorCliques === perguntas.length - 1) {
+                    const containerBotoes = document.getElementById('container-botoes');
+                    containerBotoes.innerHTML = `
+                        <button class="btn-sim-estilo" onclick="mostrarFotos()">SIM!</button>
+                        <button class="btn-sim-estilo" onclick="mostrarFotos()">SIM!</button>
+                    `;
+                }
+            }
+        }
+
+        function mostrarFotos() {
+            document.getElementById('tela-pergunta').style.display = 'none';
+            document.getElementById('tela-foto').style.display = 'block';
+        }
+
+        function mudarFoto() {
+            const slide1 = document.getElementById('slide-1');
+            const slide2 = document.getElementById('slide-2');
+            const btnSeta = document.getElementById('btn-seta');
+            const recado = document.getElementById('recado-amor');
+
+            if (fotoAtual === 1) {
+                slide1.style.transform = 'translateX(-100%)';
+                slide2.style.transform = 'translateX(-100%)';
+                
+                btnSeta.innerText = '➔';
+                btnSeta.style.left = '-10px';
+                btnSeta.style.right = 'auto';
+                btnSeta.style.animation = 'balancoSetaEsquerda 1.5s infinite ease-in-out';
+                
+                recado.style.display = 'block';
+                
+                fotoAtual = 2;
+            } else {
+                slide1.style.transform = 'translateX(0)';
+                slide2.style.transform = 'translateX(0)';
+                
+                btnSeta.innerText = '➔';
+                btnSeta.style.right = '-10px';
+                btnSeta.style.left = 'auto';
+                btnSeta.style.animation = 'balancoSeta 1.5s infinite ease-in-out';
+                
+                recado.style.display = 'none';
+                
+                fotoAtual = 1;
+            }
+        }
+    </script>
+
+    <style>
+        @keyframes balancoSetaEsquerda {
+            0%, 100% { transform: translateY(-50%) translateX(0); opacity: 0.8; }
+            50% { transform: translateY(-50%) translateX(-6px); opacity: 1; }
+        }
+    </style>
+
+    <script>
+        const dragItem = document.querySelector("#recado-amor");
+        let active = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        document.addEventListener("touchstart", dragStart, { passive: false });
+        document.addEventListener("touchend", dragEnd, { passive: false });
+        document.addEventListener("touchmove", drag, { passive: false });
+
+        document.addEventListener("mousedown", dragStart);
+        document.addEventListener("mouseup", dragEnd);
+        document.addEventListener("mousemove", drag);
+
+        function dragStart(e) {
+            if (e.target === dragItem || dragItem.contains(e.target)) {
+                dragItem.style.animation = 'none';
+                if (e.type === "touchstart") {
+                    initialX = e.touches[0].clientX - xOffset;
+                    initialY = e.touches[0].clientY - yOffset;
+                } else {
+                    initialX = e.clientX - xOffset;
+                    initialY = e.clientY - yOffset;
+                }
+                active = true;
+            }
+        }
+
+        function dragEnd() {
+            initialX = currentX;
+            initialY = currentY;
+            active = false;
+        }
+
+        function drag(e) {
+            if (active) {
+                e.preventDefault();
+                if (e.type === "touchmove") {
+                    currentX = e.touches[0].clientX - initialX;
+                    currentY = e.touches[0].clientY - initialY;
+                } else {
+                    currentX = e.clientX - initialX;
+                    currentY = e.clientY - initialY;
+                }
+                xOffset = currentX;
+                yOffset = currentY;
+                dragItem.style.transform = "translate3d(" + currentX + "px, " + currentY + "px, 0) rotate(-45deg)";
+            }
+        }
+    </script>
+
+    <script>
+        function criarCoracao() {
+            const col = document.createElement('div');
+            col.classList.add('coracao');
+            col.innerHTML = '❤️';
+            col.style.left = Math.random() * 100 + 'vw';
+            const tamanho = Math.random() * 20 + 15;
+            col.style.fontSize = tamanho + 'px';
+            const duracao = Math.random() * 3 + 4;
+            col.style.animationDuration = duracao + 's';
+            document.body.appendChild(col);
+            setTimeout(() => { col.remove(); }, duracao * 1000);
+        }
+        setInterval(criarCoracao, 400);
+    </script>
+</body>
+</html>
